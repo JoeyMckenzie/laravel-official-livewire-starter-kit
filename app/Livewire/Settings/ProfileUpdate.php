@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Livewire\Settings;
 
 use App\Models\User;
@@ -8,9 +10,10 @@ use Illuminate\Support\Facades\Session;
 use Illuminate\Validation\Rule;
 use Livewire\Component;
 
-class ProfileUpdate extends Component
+final class ProfileUpdate extends Component
 {
     public string $name = '';
+
     public string $email = '';
 
     /**
@@ -38,7 +41,7 @@ class ProfileUpdate extends Component
                 'lowercase',
                 'email',
                 'max:255',
-                Rule::unique(User::class)->ignore($user->id)
+                Rule::unique(User::class)->ignore($user->id),
             ],
         ]);
 

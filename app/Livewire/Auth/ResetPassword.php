@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Livewire\Auth;
 
 use Illuminate\Auth\Events\PasswordReset;
@@ -14,12 +16,15 @@ use Livewire\Attributes\Locked;
 use Livewire\Component;
 
 #[Layout('components.layouts.auth')]
-class ResetPassword extends Component
+final class ResetPassword extends Component
 {
     #[Locked]
     public string $token = '';
+
     public string $email = '';
+
     public string $password = '';
+
     public string $password_confirmation = '';
 
     /**
@@ -29,7 +34,7 @@ class ResetPassword extends Component
     {
         $this->token = $token;
 
-        $this->email = request()->string('email');
+        $this->email = request()->string('email')->toString();
     }
 
     /**
@@ -48,7 +53,7 @@ class ResetPassword extends Component
         // database. Otherwise we will parse the error and return the response.
         $status = Passwords::reset(
             $this->only('email', 'password', 'password_confirmation', 'token'),
-            function ($user) {
+            function ($user): void {
                 $user->forceFill([
                     'password' => Hash::make($this->password),
                     'remember_token' => Str::random(60),
@@ -61,7 +66,7 @@ class ResetPassword extends Component
         // If the password was successfully reset, we will redirect the user back to
         // the application's home authenticated view. If there is an error we can
         // redirect them back to where they came from with their error message.
-        if ($status != Passwords::PasswordReset) {
+        if ($status !== Passwords::PasswordReset) {
             $this->addError('email', __($status));
 
             return;

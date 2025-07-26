@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Livewire\Settings;
 
 use Illuminate\Support\Facades\Auth;
@@ -9,10 +11,12 @@ use Illuminate\Validation\ValidationException;
 use Illuminate\View\View;
 use Livewire\Component;
 
-class PasswordInput extends Component
+final class PasswordInput extends Component
 {
     public string $current_password = '';
+
     public string $password = '';
+
     public string $password_confirmation = '';
 
     /**

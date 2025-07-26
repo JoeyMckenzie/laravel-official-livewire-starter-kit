@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Feature\Settings;
 
 use App\Livewire\Settings\PasswordInput;
@@ -12,7 +14,7 @@ use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 #[CoversClass(PasswordInput::class)]
-class PasswordUpdateTest extends TestCase
+final class PasswordUpdateTest extends TestCase
 {
     use RefreshDatabase;
 

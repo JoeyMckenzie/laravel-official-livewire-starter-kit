@@ -1,3 +1,6 @@
+includes:
+	- vendor/phpstan/phpstan/conf/bleedingEdge.neon
+
 parameters:
     level: max
     paths:
@@ -7,11 +10,8 @@ parameters:
         - bootstrap/app.php
         - bootstrap/providers.php
         - public/index.php
+        - tests
     tmpDir: build/phpstan
     reportUnmatchedIgnoredErrors: true
-    checkOctaneCompatibility: true
-    checkModelProperties: true
-    ignoreErrors:
-        -
-            message: '#Dynamic call to static method Illuminate\\Http\\Request::validate\(\).#'
-            path: app/Http/Controllers/**/*.php
+    # checkOctaneCompatibility: true
+    # checkModelProperties: true

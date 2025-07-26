@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use App\Livewire\Settings\AppearanceToggle;
 use App\Livewire\Settings\PasswordInput;
 use App\Livewire\Settings\ProfileUpdate;
@@ -11,7 +13,7 @@ Route::view('dashboard', 'dashboard')
     ->middleware(['auth', 'verified'])
     ->name('dashboard');
 
-Route::middleware(['auth'])->group(function () {
+Route::middleware(['auth'])->group(function (): void {
     Route::redirect('settings', 'settings/profile');
 
     Route::get('settings/profile', ProfileUpdate::class)->name('settings.profile');

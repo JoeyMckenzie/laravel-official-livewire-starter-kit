@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Feature\Settings;
 
 use App\Livewire\Settings\ProfileUpdate;
@@ -11,7 +13,7 @@ use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 #[CoversClass(ProfileUpdate::class)]
-class ProfileUpdateTest extends TestCase
+final class ProfileUpdateTest extends TestCase
 {
     use RefreshDatabase;
 
