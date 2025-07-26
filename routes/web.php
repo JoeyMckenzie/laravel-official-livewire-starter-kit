@@ -1,11 +1,11 @@
 <?php
 
+use App\Livewire\Settings\AppearanceToggle;
+use App\Livewire\Settings\PasswordInput;
+use App\Livewire\Settings\ProfileUpdate;
 use Illuminate\Support\Facades\Route;
-use Livewire\Volt\Volt;
 
-Route::get('/', function () {
-    return view('welcome');
-})->name('home');
+Route::get('/', fn () => view('welcome'))->name('home');
 
 Route::view('dashboard', 'dashboard')
     ->middleware(['auth', 'verified'])
@@ -14,9 +14,9 @@ Route::view('dashboard', 'dashboard')
 Route::middleware(['auth'])->group(function () {
     Route::redirect('settings', 'settings/profile');
 
-    Volt::route('settings/profile', 'settings.profile')->name('settings.profile');
-    Volt::route('settings/password', 'settings.password')->name('settings.password');
-    Volt::route('settings/appearance', 'settings.appearance')->name('settings.appearance');
+    Route::get('settings/profile', ProfileUpdate::class)->name('settings.profile');
+    Route::get('settings/password', PasswordInput::class)->name('settings.password');
+    Route::get('settings/appearance', AppearanceToggle::class)->name('settings.appearance');
 });
 
 require __DIR__.'/auth.php';
