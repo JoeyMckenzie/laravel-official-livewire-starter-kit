@@ -19,14 +19,17 @@ final class RegistrationTest extends TestCase
     #[Test]
     public function test_registration_screen_can_be_rendered(): void
     {
+        // Arrange & Act
         $response = $this->get('/register');
 
+        // Assert
         $response->assertStatus(200);
     }
 
     #[Test]
     public function test_new_users_can_register(): void
     {
+        // Arrange & Act
         $response = Livewire::test('auth.register')
             ->set('name', 'Test User')
             ->set('email', 'test@example.com')
@@ -34,10 +37,9 @@ final class RegistrationTest extends TestCase
             ->set('password_confirmation', 'password')
             ->call('register');
 
-        $response
-            ->assertHasNoErrors()
-            ->assertRedirect(route('dashboard', absolute: false));
-
+        // Assert
+        $response->assertHasNoErrors();
+        $response->assertRedirect(route('dashboard', absolute: false));
         $this->assertAuthenticated();
     }
 }
