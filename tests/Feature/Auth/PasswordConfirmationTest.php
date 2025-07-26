@@ -20,40 +20,49 @@ final class PasswordConfirmationTest extends TestCase
     #[Test]
     public function test_confirm_password_screen_can_be_rendered(): void
     {
+        // Arrange
+        /** @var User $user */
         $user = User::factory()->create();
 
+        // Act
         $response = $this->actingAs($user)->get('/confirm-password');
 
+        // Assert
         $response->assertStatus(200);
     }
 
     #[Test]
     public function test_password_can_be_confirmed(): void
     {
+        // Arrange
+        /** @var User $user */
         $user = User::factory()->create();
 
+        // Act
         $this->actingAs($user);
-
         $response = Livewire::test('auth.confirm-password')
             ->set('password', 'password')
             ->call('confirmPassword');
 
-        $response
-            ->assertHasNoErrors()
-            ->assertRedirect(route('dashboard', absolute: false));
+        // Assert
+        $response->assertHasNoErrors();
+        $response->assertRedirect(route('dashboard', absolute: false));
     }
 
     #[Test]
     public function test_password_is_not_confirmed_with_invalid_password(): void
     {
+        // Arrange
+        /** @var User $user */
         $user = User::factory()->create();
 
+        // Act
         $this->actingAs($user);
-
         $response = Livewire::test('auth.confirm-password')
             ->set('password', 'wrong-password')
             ->call('confirmPassword');
 
+        // Assert
         $response->assertHasErrors(['password']);
     }
 }
