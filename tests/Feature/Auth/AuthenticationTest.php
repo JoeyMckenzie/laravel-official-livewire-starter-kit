@@ -20,8 +20,10 @@ final class AuthenticationTest extends TestCase
     #[Test]
     public function test_login_screen_can_be_rendered(): void
     {
+        // Arrange & Act
         $response = $this->get('/login');
 
+        // Assert
         $response->assertStatus(200);
     }
 
