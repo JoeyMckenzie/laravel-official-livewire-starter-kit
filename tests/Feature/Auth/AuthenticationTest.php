@@ -30,44 +30,52 @@ final class AuthenticationTest extends TestCase
     #[Test]
     public function test_users_can_authenticate_using_the_login_screen(): void
     {
+        // Arrange
+        /** @var User $user */
         $user = User::factory()->create();
 
+        // Act
         $response = Livewire::test('auth.login')
             ->set('email', $user->email)
             ->set('password', 'password')
             ->call('login');
 
-        $response
-            ->assertHasNoErrors()
-            ->assertRedirect(route('dashboard', absolute: false));
-
+        // Assert
+        $response->assertHasNoErrors();
+        $response->assertRedirect(route('dashboard', absolute: false));
         $this->assertAuthenticated();
     }
 
     #[Test]
     public function test_users_can_not_authenticate_with_invalid_password(): void
     {
+        // Arrange
+        /** @var User $user */
         $user = User::factory()->create();
 
+        // Act
         $response = Livewire::test('auth.login')
             ->set('email', $user->email)
             ->set('password', 'wrong-password')
             ->call('login');
 
+        // Assert
         $response->assertHasErrors('email');
-
         $this->assertGuest();
     }
 
     #[Test]
     public function test_users_can_logout(): void
     {
+        // Arrange
+        /** @var User $user */
         $user = User::factory()->create();
 
+        // Act
         $response = $this->actingAs($user)->post('/logout');
 
+        // Assert
         $response->assertRedirect('/');
-
         $this->assertGuest();
     }
 }
