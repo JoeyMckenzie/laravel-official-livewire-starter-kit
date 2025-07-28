@@ -15,7 +15,9 @@ error() {
 }
 
 project_root=$(git rev-parse --show-toplevel)
+env_file="$project_root/.env"
 vendor="$project_root/vendor"
+node_modules="$project_root/node_modules"
 
 # Use POSIX-compatible test syntax or ensure bash is used
 case "$OSTYPE" in
@@ -36,6 +38,17 @@ info "Detected OS: $OS_RUNNER"
 if [ ! -d "$vendor" ]; then
     info "Installing composer dependencies..."
     composer install --no-interaction --prefer-dist --no-progress --optimize-autoloader
+fi
+
+if [ ! -d "$node_modules" ]; then
+    info "Installing npm dependencies..."
+    npm ci
+fi
+
+if [ ! -f "$env_file" ]; then
+    info ".env file not found, initializing environment"
+    cp .env.example .env
+    php artisan key:generate
 fi
 
 # Use POSIX-compatible redirection
@@ -62,16 +75,21 @@ else
       error "Failed to install Aspell"
       exit 1
     fi
-  fi
+fi
 fi
 
-info "Running CI checks..."
+info "Building assets..."
+
+npm run build
+
+info "Running backend CI checks..."
 
 composer ci
 
 info "Auditing dependencies..."
 
 composer audit
+npm audit
 
 success "CI successful!"
 
