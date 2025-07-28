@@ -93,7 +93,7 @@
             "@lint:ci",
             "@fmt:test",
             "@refactor:test",
-            "@test:ci",
+            "@test:coverage",
             "@typos"
         ],
         "dev": [
@@ -126,10 +126,6 @@
             "@php artisan config:clear --ansi",
             "@fmt",
             "XDEBUG_MODE=off vendor/bin/phpunit"
-        ],
-        "test:ci": [
-            "@test:coverage",
-            "@test:types"
         ],
         "test:coverage": [
             "@fmt",

@@ -3,10 +3,12 @@
     "ignore": {
         "words": [
             "php",
-            "lefthook"
-        ],
-        "paths": [
-            "tests"
+            "lefthook",
+            "favicon",
+            "filesystems",
+            "navlist",
+            "debugbar",
+            "js"
         ]
     }
 }
