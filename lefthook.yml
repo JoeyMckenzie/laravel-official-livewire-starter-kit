@@ -1,0 +1,27 @@
+pre-push:
+  parallel: true
+  jobs:
+    - name: Audit backend packages
+      tags:
+        - security
+      run: composer audit
+    - name: Audit frontend packages
+      tags:
+        - security
+      run: npm audit
+
+pre-commit:
+  parallel: true
+  jobs:
+    - name: Prep files
+      run: composer fix
+      glob: "*.php"
+      stage_fixed: true
+    - name: Test files
+      run: composer test
+      glob: "*.php"
+
+commit-msg:
+  scripts:
+    validate:
+      runner: bash

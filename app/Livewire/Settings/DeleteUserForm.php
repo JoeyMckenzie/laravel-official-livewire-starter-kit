@@ -26,7 +26,7 @@ final class DeleteUserForm extends Component
         /** @var User $user */
         $user = Auth::user();
 
-        tap($user, function () {
+        tap($user, function (): void {
             Auth::guard('web')->logout(); // @phpstan-ignore-line method.notFound
 
             Session::invalidate();
