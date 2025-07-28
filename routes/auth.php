@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use App\Http\Controllers\Auth\VerifyEmailController;
+use App\Livewire\Actions\Logout;
 use App\Livewire\Auth\ConfirmPassword;
 use App\Livewire\Auth\ForgotPassword;
 use App\Livewire\Auth\Login;
@@ -30,7 +31,7 @@ Route::middleware('auth')->group(function (): void {
     Route::get('verify-email', VerifyEmail::class)
         ->name('verification.notice');
 
-    Route::get('verify-email/{id}/{hash}', VerifyEmailController::class)
+    Route::get('verify-email/{id}/{hash}', VerifyEmailController::class) // @phpstan-ignore-line method.nonObject
         ->middleware(['signed', 'throttle:6,1'])
         ->name('verification.verify');
 
@@ -38,5 +39,5 @@ Route::middleware('auth')->group(function (): void {
         ->name('password.confirm');
 });
 
-Route::post('logout', App\Livewire\Actions\Logout::class)
+Route::post('logout', Logout::class)
     ->name('logout');

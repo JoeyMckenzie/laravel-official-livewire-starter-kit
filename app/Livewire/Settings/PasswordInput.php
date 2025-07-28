@@ -4,11 +4,12 @@ declare(strict_types=1);
 
 namespace App\Livewire\Settings;
 
+use App\Models\User;
+use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules\Password;
 use Illuminate\Validation\ValidationException;
-use Illuminate\View\View;
 use Livewire\Component;
 
 final class PasswordInput extends Component
@@ -25,6 +26,7 @@ final class PasswordInput extends Component
     public function updatePassword(): void
     {
         try {
+            /** @var array{current_password: string, password: string} $validated */
             $validated = $this->validate([
                 'current_password' => ['required', 'string', 'current_password'],
                 'password' => ['required', 'string', Password::defaults(), 'confirmed'],
@@ -35,7 +37,9 @@ final class PasswordInput extends Component
             throw $e;
         }
 
-        Auth::user()->update([
+        /** @var User $user */
+        $user = Auth::user();
+        $user->update([
             'password' => Hash::make($validated['password']),
         ]);
 

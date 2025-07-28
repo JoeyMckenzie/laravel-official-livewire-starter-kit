@@ -43,7 +43,7 @@ use Illuminate\Support\Str;
  *
  * @mixin Eloquent
  */
-final class User extends Authenticatable implements MustVerifyEmail
+final class User extends Authenticatable implements MustVerifyEmail // @phpstan-ignore-line class.notFound
 {
     /** @use HasFactory<UserFactory> */
     use HasFactory, Notifiable;
@@ -77,7 +77,7 @@ final class User extends Authenticatable implements MustVerifyEmail
         return Str::of($this->name)
             ->explode(' ')
             ->take(2)
-            ->map(fn ($word) => Str::substr($word, 0, 1))
+            ->map(fn (string $word) => Str::substr($word, 0, 1))
             ->implode('');
     }
 
