@@ -13,5 +13,5 @@ parameters:
         - tests
     tmpDir: build/phpstan
     reportUnmatchedIgnoredErrors: true
-    # checkOctaneCompatibility: true
-    # checkModelProperties: true
+    checkOctaneCompatibility: true
+    checkModelProperties: true

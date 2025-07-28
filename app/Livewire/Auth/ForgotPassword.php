@@ -28,7 +28,7 @@ final class ForgotPassword extends Component
 
         Password::sendResetLink($email);
 
-        session()->flash('status', __('A reset link will be sent if the account exists.'));
+        session()->flash('status', __('A reset link will be sent if the account exists.')); // @phpstan-ignore-line staticMethod.dynamicCall
     }
 
     public function render(): View

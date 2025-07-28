@@ -38,7 +38,7 @@ final class Register extends Component
 
         $validated['password'] = Hash::make($validated['password']);
         /** @var User $user */
-        $user = User::create($validated); // @phpstan-ignore-line staticMethod.notFound
+        $user = User::create($validated);
 
         event(new Registered($user));
 

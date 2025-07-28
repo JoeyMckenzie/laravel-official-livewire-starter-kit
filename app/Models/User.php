@@ -43,7 +43,7 @@ use Illuminate\Support\Str;
  *
  * @mixin Eloquent
  */
-final class User extends Authenticatable implements MustVerifyEmail // @phpstan-ignore-line class.notFound
+final class User extends Authenticatable implements MustVerifyEmail
 {
     /** @use HasFactory<UserFactory> */
     use HasFactory, Notifiable;
@@ -51,7 +51,7 @@ final class User extends Authenticatable implements MustVerifyEmail // @phpstan-
     /**
      * The attributes that are mass assignable.
      *
-     * @var array<int, string>
+     * @var list<string>
      */
     protected $fillable = [
         'name',
@@ -62,7 +62,7 @@ final class User extends Authenticatable implements MustVerifyEmail // @phpstan-
     /**
      * The attributes that should be hidden for serialization.
      *
-     * @var array<string>
+     * @var list<string>
      */
     protected $hidden = [
         'password',

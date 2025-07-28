@@ -15,7 +15,7 @@ final class Logout
      */
     public function __invoke(): RedirectResponse
     {
-        Auth::guard('web')->logout(); // @phpstan-ignore-line method.notFound
+        Auth::guard('web')->logout();
 
         Session::invalidate();
         Session::regenerateToken();
