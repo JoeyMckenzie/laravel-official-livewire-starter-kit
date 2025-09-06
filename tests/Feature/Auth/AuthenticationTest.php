@@ -18,10 +18,10 @@ final class AuthenticationTest extends TestCase
     use RefreshDatabase;
 
     #[Test]
-    public function test_login_screen_can_be_rendered(): void
+    public function login_screen_can_be_rendered(): void
     {
         // Arrange & Act
-        $response = $this->get('/login');
+        $response = $this->get(route('login'));
 
         // Assert
         $response->assertStatus(200);
@@ -72,10 +72,10 @@ final class AuthenticationTest extends TestCase
         $user = User::factory()->create();
 
         // Act
-        $response = $this->actingAs($user)->post('/logout');
+        $response = $this->actingAs($user)->post(route('logout'));
 
         // Assert
-        $response->assertRedirect('/');
+        $response->assertRedirect(route('home'));
         $this->assertGuest();
     }
 }

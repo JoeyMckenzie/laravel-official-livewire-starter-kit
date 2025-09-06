@@ -20,7 +20,7 @@ final class RegistrationTest extends TestCase
     public function test_registration_screen_can_be_rendered(): void
     {
         // Arrange & Act
-        $response = $this->get('/register');
+        $response = $this->get(route('register'));
 
         // Assert
         $response->assertStatus(200);

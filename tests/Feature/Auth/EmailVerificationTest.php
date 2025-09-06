@@ -28,7 +28,7 @@ final class EmailVerificationTest extends TestCase
         $user = User::factory()->unverified()->create();
 
         // Act
-        $response = $this->actingAs($user)->get('/verify-email');
+        $response = $this->actingAs($user)->get(route('verification.notice'));
 
         // Assert
         $response->assertStatus(200);
@@ -77,5 +77,39 @@ final class EmailVerificationTest extends TestCase
 
         // Assert
         Assert::assertFalse($user->fresh()?->hasVerifiedEmail());
+    }
+
+    #[Test]
+    public function test_already_verified_user_visiting_verification_link_is_redirected_without_firing_event_again(): void
+    {
+        // Arrange
+        /** @var User $user */
+        $user = User::factory()->create([
+            'email_verified_at' => now(),
+        ]);
+
+        Event::fake();
+
+        $verificationUrl = URL::temporarySignedRoute(
+            'verification.verify',
+            now()->addMinutes(60),
+            [
+                'id' => $user->id,
+                'hash' => sha1($user->email),
+            ]
+        );
+
+        // Act
+        $this->actingAs($user)
+            ->get($verificationUrl)
+            ->assertRedirect(route('dashboard', absolute: false).'?verified=1');
+
+        $refreshed = $user->fresh();
+        assert($refreshed !== null);
+
+        // assert
+        Assert::assertNotNull($refreshed->email_verified_at);
+        Assert::assertTrue($refreshed->hasVerifiedEmail());
+        Event::assertNotDispatched(Verified::class);
     }
 }

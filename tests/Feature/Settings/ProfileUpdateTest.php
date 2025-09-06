@@ -29,7 +29,7 @@ final class ProfileUpdateTest extends TestCase
         $this->actingAs($user);
 
         // Assert
-        $this->get('/settings/profile')->assertOk();
+        $this->get(route('settings.profile'))->assertOk();
     }
 
     #[Test]

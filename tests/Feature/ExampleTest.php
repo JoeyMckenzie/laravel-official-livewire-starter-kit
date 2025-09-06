@@ -15,7 +15,7 @@ final class ExampleTest extends TestCase
     #[Test]
     public function test_returns_a_successful_response(): void
     {
-        $response = $this->get('/');
+        $response = $this->get(route('home'));
 
         $response->assertStatus(200);
     }

@@ -17,10 +17,10 @@ final class DashboardTest extends TestCase
     public function test_guests_are_redirected_to_the_login_page(): void
     {
         // Arrange & Act
-        $response = $this->get('/dashboard');
+        $response = $this->get(route('dashboard'));
 
         // Assert
-        $response->assertRedirect('/login');
+        $response->assertRedirect(route('login'));
     }
 
     #[Test]
@@ -32,7 +32,7 @@ final class DashboardTest extends TestCase
 
         // Act
         $this->actingAs($user);
-        $response = $this->get('/dashboard');
+        $response = $this->get(route('dashboard'));
 
         // Assert
         $response->assertStatus(200);
