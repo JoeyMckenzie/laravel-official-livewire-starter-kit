@@ -102,18 +102,18 @@
             "Composer\\Config::disableProcessTimeout",
             "npx concurrently -c \"#93c5fd,#c4b5fd,#fb7185,#fdba74\" \"php artisan serve\" \"php artisan queue:listen --tries=1\" \"php artisan pail --timeout=0\" \"npm run dev\" --names=server,queue,logs,vite --kill-others"
         ],
-        "generate:ide-helpers": [
-            "php artisan ide-helper:generate",
-            "php artisan ide-helper:models -RW",
-            "php artisan ide-helper:meta",
-            "@fmt"
-        ],
         "fix": [
             "@refactor",
             "@fmt"
         ],
         "fmt": "vendor/bin/pint --parallel",
         "fmt:test": "vendor/bin/pint --test --parallel",
+        "generate:ide-helpers": [
+            "php artisan ide-helper:generate",
+            "php artisan ide-helper:models -RW",
+            "php artisan ide-helper:meta",
+            "@fmt"
+        ],
         "lint": "XDEBUG_MODE=off vendor/bin/phpstan analyze",
         "lint:ci": "XDEBUG_MODE=off vendor/bin/phpstan analyze --error-format=github",
         "lint:clear": "vendor/bin/phpstan clear-result-cache",

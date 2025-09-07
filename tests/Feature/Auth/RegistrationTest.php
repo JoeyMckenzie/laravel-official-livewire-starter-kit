@@ -17,7 +17,7 @@ final class RegistrationTest extends TestCase
     use RefreshDatabase;
 
     #[Test]
-    public function test_registration_screen_can_be_rendered(): void
+    public function registration_screen_can_be_rendered(): void
     {
         // Arrange & Act
         $response = $this->get(route('register'));
@@ -27,7 +27,7 @@ final class RegistrationTest extends TestCase
     }
 
     #[Test]
-    public function test_new_users_can_register(): void
+    public function new_users_can_register(): void
     {
         // Arrange & Act
         $response = Livewire::test('auth.register')

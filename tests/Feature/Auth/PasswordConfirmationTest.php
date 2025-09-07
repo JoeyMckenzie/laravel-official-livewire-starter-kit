@@ -18,7 +18,7 @@ final class PasswordConfirmationTest extends TestCase
     use RefreshDatabase;
 
     #[Test]
-    public function test_confirm_password_screen_can_be_rendered(): void
+    public function confirm_password_screen_can_be_rendered(): void
     {
         // Arrange
         /** @var User $user */
@@ -32,7 +32,7 @@ final class PasswordConfirmationTest extends TestCase
     }
 
     #[Test]
-    public function test_password_can_be_confirmed(): void
+    public function password_can_be_confirmed(): void
     {
         // Arrange
         /** @var User $user */
@@ -50,7 +50,7 @@ final class PasswordConfirmationTest extends TestCase
     }
 
     #[Test]
-    public function test_password_is_not_confirmed_with_invalid_password(): void
+    public function password_is_not_confirmed_with_invalid_password(): void
     {
         // Arrange
         /** @var User $user */

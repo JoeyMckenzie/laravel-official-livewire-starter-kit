@@ -14,7 +14,7 @@ final class DashboardTest extends TestCase
     use RefreshDatabase;
 
     #[Test]
-    public function test_guests_are_redirected_to_the_login_page(): void
+    public function guests_are_redirected_to_the_login_page(): void
     {
         // Arrange & Act
         $response = $this->get(route('dashboard'));
@@ -24,7 +24,7 @@ final class DashboardTest extends TestCase
     }
 
     #[Test]
-    public function test_authenticated_users_can_visit_the_dashboard(): void
+    public function authenticated_users_can_visit_the_dashboard(): void
     {
         // Arrange
         /** @var User $user */

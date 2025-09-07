@@ -21,7 +21,7 @@ final class EmailVerificationTest extends TestCase
     use RefreshDatabase;
 
     #[Test]
-    public function test_email_verification_screen_can_be_rendered(): void
+    public function email_verification_screen_can_be_rendered(): void
     {
         // Arrange
         /** @var User $user */
@@ -35,7 +35,7 @@ final class EmailVerificationTest extends TestCase
     }
 
     #[Test]
-    public function test_email_can_be_verified(): void
+    public function email_can_be_verified(): void
     {
         // Arrange
         /** @var User $user */
@@ -60,7 +60,7 @@ final class EmailVerificationTest extends TestCase
     }
 
     #[Test]
-    public function test_email_is_not_verified_with_invalid_hash(): void
+    public function email_is_not_verified_with_invalid_hash(): void
     {
         // Arrange
         /** @var User $user */
@@ -80,7 +80,7 @@ final class EmailVerificationTest extends TestCase
     }
 
     #[Test]
-    public function test_already_verified_user_visiting_verification_link_is_redirected_without_firing_event_again(): void
+    public function already_verified_user_visiting_verification_link_is_redirected_without_firing_event_again(): void
     {
         // Arrange
         /** @var User $user */
