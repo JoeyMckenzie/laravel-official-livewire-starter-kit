@@ -16,9 +16,9 @@ final class PasswordResetTest extends TestCase
 
     public function test_reset_password_link_screen_can_be_rendered(): void
     {
-        $response = $this->get(route('password.request'));
+        $testResponse = $this->get(route('password.request'));
 
-        $response->assertStatus(200);
+        $testResponse->assertStatus(200);
     }
 
     public function test_reset_password_link_can_be_requested(): void
@@ -40,10 +40,10 @@ final class PasswordResetTest extends TestCase
 
         $this->post(route('password.request'), ['email' => $user->email]);
 
-        Notification::assertSentTo($user, ResetPassword::class, function ($notification) {
-            $response = $this->get(route('password.reset', $notification->token));
+        Notification::assertSentTo($user, ResetPassword::class, function ($notification): true {
+            $testResponse = $this->get(route('password.reset', $notification->token));
 
-            $response->assertStatus(200);
+            $testResponse->assertStatus(200);
 
             return true;
         });
@@ -57,15 +57,15 @@ final class PasswordResetTest extends TestCase
 
         $this->post(route('password.request'), ['email' => $user->email]);
 
-        Notification::assertSentTo($user, ResetPassword::class, function ($notification) use ($user) {
-            $response = $this->post(route('password.update'), [
+        Notification::assertSentTo($user, ResetPassword::class, function ($notification) use ($user): true {
+            $testResponse = $this->post(route('password.update'), [
                 'token' => $notification->token,
                 'email' => $user->email,
                 'password' => 'password',
                 'password_confirmation' => 'password',
             ]);
 
-            $response
+            $testResponse
                 ->assertSessionHasNoErrors()
                 ->assertRedirect(route('login', absolute: false));
 

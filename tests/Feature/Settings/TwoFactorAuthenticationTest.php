@@ -33,7 +33,7 @@ final class TwoFactorAuthenticationTest extends TestCase
         $user = User::factory()->withoutTwoFactor()->create();
 
         $this->actingAs($user)
-            ->withSession(['auth.password_confirmed_at' => time()])
+            ->withSession(['auth.password_confirmed_at' => \Carbon\Carbon::now()->getTimestamp()])
             ->get(route('two-factor.show'))
             ->assertOk()
             ->assertSee('Two Factor Authentication')
@@ -44,10 +44,10 @@ final class TwoFactorAuthenticationTest extends TestCase
     {
         $user = User::factory()->create();
 
-        $response = $this->actingAs($user)
+        $testResponse = $this->actingAs($user)
             ->get(route('two-factor.show'));
 
-        $response->assertRedirect(route('password.confirm'));
+        $testResponse->assertRedirect(route('password.confirm'));
     }
 
     public function test_two_factor_settings_page_returns_forbidden_response_when_two_factor_is_disabled(): void
@@ -56,11 +56,11 @@ final class TwoFactorAuthenticationTest extends TestCase
 
         $user = User::factory()->create();
 
-        $response = $this->actingAs($user)
-            ->withSession(['auth.password_confirmed_at' => time()])
+        $testResponse = $this->actingAs($user)
+            ->withSession(['auth.password_confirmed_at' => \Carbon\Carbon::now()->getTimestamp()])
             ->get(route('two-factor.show'));
 
-        $response->assertForbidden();
+        $testResponse->assertForbidden();
     }
 
     public function test_two_factor_authentication_disabled_when_confirmation_abandoned_between_requests(): void
@@ -75,9 +75,9 @@ final class TwoFactorAuthenticationTest extends TestCase
 
         $this->actingAs($user);
 
-        $component = Volt::test('settings.two-factor');
+        $testable = Volt::test('settings.two-factor');
 
-        $component->assertSet('twoFactorEnabled', false);
+        $testable->assertSet('twoFactorEnabled', false);
 
         $this->assertDatabaseHas('users', [
             'id' => $user->id,

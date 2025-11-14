@@ -26,18 +26,18 @@ final class ProfileUpdateTest extends TestCase
 
         $this->actingAs($user);
 
-        $response = Volt::test('settings.profile')
+        $testable = Volt::test('settings.profile')
             ->set('name', 'Test User')
             ->set('email', 'test@example.com')
             ->call('updateProfileInformation');
 
-        $response->assertHasNoErrors();
+        $testable->assertHasNoErrors();
 
         $user->refresh();
 
         $this->assertEquals('Test User', $user->name);
         $this->assertEquals('test@example.com', $user->email);
-        $this->assertNull($user->email_verified_at);
+        $this->assertNotInstanceOf(\Illuminate\Support\Carbon::class, $user->email_verified_at);
     }
 
     public function test_email_verification_status_is_unchanged_when_email_address_is_unchanged(): void
@@ -46,14 +46,14 @@ final class ProfileUpdateTest extends TestCase
 
         $this->actingAs($user);
 
-        $response = Volt::test('settings.profile')
+        $testable = Volt::test('settings.profile')
             ->set('name', 'Test User')
             ->set('email', $user->email)
             ->call('updateProfileInformation');
 
-        $response->assertHasNoErrors();
+        $testable->assertHasNoErrors();
 
-        $this->assertNotNull($user->refresh()->email_verified_at);
+        $this->assertInstanceOf(\Illuminate\Support\Carbon::class, $user->refresh()->email_verified_at);
     }
 
     public function test_user_can_delete_their_account(): void
@@ -62,11 +62,11 @@ final class ProfileUpdateTest extends TestCase
 
         $this->actingAs($user);
 
-        $response = Volt::test('settings.delete-user-form')
+        $testable = Volt::test('settings.delete-user-form')
             ->set('password', 'password')
             ->call('deleteUser');
 
-        $response
+        $testable
             ->assertHasNoErrors()
             ->assertRedirect('/');
 
@@ -80,11 +80,11 @@ final class ProfileUpdateTest extends TestCase
 
         $this->actingAs($user);
 
-        $response = Volt::test('settings.delete-user-form')
+        $testable = Volt::test('settings.delete-user-form')
             ->set('password', 'wrong-password')
             ->call('deleteUser');
 
-        $response->assertHasErrors(['password']);
+        $testable->assertHasErrors(['password']);
 
         $this->assertNotNull($user->fresh());
     }

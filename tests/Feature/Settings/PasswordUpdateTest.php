@@ -22,13 +22,13 @@ final class PasswordUpdateTest extends TestCase
 
         $this->actingAs($user);
 
-        $response = Volt::test('settings.password')
+        $testable = Volt::test('settings.password')
             ->set('current_password', 'password')
             ->set('password', 'new-password')
             ->set('password_confirmation', 'new-password')
             ->call('updatePassword');
 
-        $response->assertHasNoErrors();
+        $testable->assertHasNoErrors();
 
         $this->assertTrue(Hash::check('new-password', $user->refresh()->password));
     }
@@ -41,12 +41,12 @@ final class PasswordUpdateTest extends TestCase
 
         $this->actingAs($user);
 
-        $response = Volt::test('settings.password')
+        $testable = Volt::test('settings.password')
             ->set('current_password', 'wrong-password')
             ->set('password', 'new-password')
             ->set('password_confirmation', 'new-password')
             ->call('updatePassword');
 
-        $response->assertHasErrors(['current_password']);
+        $testable->assertHasErrors(['current_password']);
     }
 }

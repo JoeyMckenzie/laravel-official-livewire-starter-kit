@@ -16,8 +16,8 @@ final class PasswordConfirmationTest extends TestCase
     {
         $user = User::factory()->create();
 
-        $response = $this->actingAs($user)->get(route('password.confirm'));
+        $testResponse = $this->actingAs($user)->get(route('password.confirm'));
 
-        $response->assertStatus(200);
+        $testResponse->assertStatus(200);
     }
 }

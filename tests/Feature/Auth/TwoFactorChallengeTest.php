@@ -19,9 +19,9 @@ final class TwoFactorChallengeTest extends TestCase
             $this->markTestSkipped('Two-factor authentication is not enabled.');
         }
 
-        $response = $this->get(route('two-factor.login'));
+        $testResponse = $this->get(route('two-factor.login'));
 
-        $response->assertRedirect(route('login'));
+        $testResponse->assertRedirect(route('login'));
     }
 
     public function test_two_factor_challenge_can_be_rendered(): void
