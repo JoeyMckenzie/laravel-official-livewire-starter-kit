@@ -1,0 +1,22 @@
+includes:
+	- vendor/phpstan/phpstan/conf/bleedingEdge.neon
+
+parameters:
+    level: max
+    paths:
+        - app
+        - database
+        - routes
+        - tests
+        - bootstrap/app.php
+        - bootstrap/providers.php
+        - public/index.php
+    tmpDir: .phpstan
+    reportUnmatchedIgnoredErrors: true
+    checkOctaneCompatibility: true
+    checkModelProperties: true
+    treatPhpDocTypesAsCertain: false
+    ignoreErrors:
+        -
+            message: '#Parameter \#1 \$input \(array<model property of App\\Domains\\Auth\\Models\\User, string>\) of method App\\Domains\\Auth\\Actions\\Fortify\\CreateNewUser::create\(\) should be compatible with parameter \$input \(array\) of method Laravel\\Fortify\\Contracts\\CreatesNewUsers::create\(\)#'
+            path: app/Domains/Auth/Actions/Fortify/CreateNewUser.php
