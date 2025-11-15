@@ -9,13 +9,15 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Carbon;
 use Livewire\Volt\Volt;
 use PHPUnit\Framework\Assert;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 final class ProfileUpdateTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_profile_page_is_displayed(): void
+    #[Test]
+    public function profile_page_is_displayed(): void
     {
         $user = User::factory()->create();
 
@@ -24,7 +26,8 @@ final class ProfileUpdateTest extends TestCase
         $this->get(route('profile.edit'))->assertOk();
     }
 
-    public function test_profile_information_can_be_updated(): void
+    #[Test]
+    public function profile_information_can_be_updated(): void
     {
         $user = User::factory()->create();
 
@@ -44,7 +47,8 @@ final class ProfileUpdateTest extends TestCase
         Assert::assertNotInstanceOf(Carbon::class, $user->email_verified_at);
     }
 
-    public function test_email_verification_status_is_unchanged_when_email_address_is_unchanged(): void
+    #[Test]
+    public function email_verification_status_is_unchanged_when_email_address_is_unchanged(): void
     {
         $user = User::factory()->create();
 
@@ -60,7 +64,8 @@ final class ProfileUpdateTest extends TestCase
         Assert::assertInstanceOf(Carbon::class, $user->refresh()->email_verified_at);
     }
 
-    public function test_user_can_delete_their_account(): void
+    #[Test]
+    public function user_can_delete_their_account(): void
     {
         $user = User::factory()->create();
 
@@ -78,7 +83,8 @@ final class ProfileUpdateTest extends TestCase
         Assert::assertFalse(auth()->check());
     }
 
-    public function test_correct_password_must_be_provided_to_delete_account(): void
+    #[Test]
+    public function correct_password_must_be_provided_to_delete_account(): void
     {
         $user = User::factory()->create();
 
