@@ -6,7 +6,9 @@ namespace Tests\Feature\Settings;
 
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Carbon;
 use Livewire\Volt\Volt;
+use PHPUnit\Framework\Assert;
 use Tests\TestCase;
 
 final class ProfileUpdateTest extends TestCase
@@ -15,7 +17,9 @@ final class ProfileUpdateTest extends TestCase
 
     public function test_profile_page_is_displayed(): void
     {
-        $this->actingAs($user = User::factory()->create());
+        $user = User::factory()->create();
+
+        $this->actingAs($user);
 
         $this->get(route('profile.edit'))->assertOk();
     }
@@ -35,9 +39,9 @@ final class ProfileUpdateTest extends TestCase
 
         $user->refresh();
 
-        $this->assertEquals('Test User', $user->name);
-        $this->assertEquals('test@example.com', $user->email);
-        $this->assertNotInstanceOf(\Illuminate\Support\Carbon::class, $user->email_verified_at);
+        Assert::assertEquals('Test User', $user->name);
+        Assert::assertEquals('test@example.com', $user->email);
+        Assert::assertNotInstanceOf(Carbon::class, $user->email_verified_at);
     }
 
     public function test_email_verification_status_is_unchanged_when_email_address_is_unchanged(): void
@@ -53,7 +57,7 @@ final class ProfileUpdateTest extends TestCase
 
         $testable->assertHasNoErrors();
 
-        $this->assertInstanceOf(\Illuminate\Support\Carbon::class, $user->refresh()->email_verified_at);
+        Assert::assertInstanceOf(Carbon::class, $user->refresh()->email_verified_at);
     }
 
     public function test_user_can_delete_their_account(): void
@@ -70,8 +74,8 @@ final class ProfileUpdateTest extends TestCase
             ->assertHasNoErrors()
             ->assertRedirect('/');
 
-        $this->assertNull($user->fresh());
-        $this->assertFalse(auth()->check());
+        Assert::assertNull($user->fresh());
+        Assert::assertFalse(auth()->check());
     }
 
     public function test_correct_password_must_be_provided_to_delete_account(): void
@@ -86,6 +90,6 @@ final class ProfileUpdateTest extends TestCase
 
         $testable->assertHasErrors(['password']);
 
-        $this->assertNotNull($user->fresh());
+        Assert::assertNotNull($user->fresh());
     }
 }

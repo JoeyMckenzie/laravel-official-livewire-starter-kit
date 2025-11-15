@@ -5,9 +5,12 @@ declare(strict_types=1);
 namespace Tests\Feature\Settings;
 
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Laravel\Fortify\Features;
 use Livewire\Volt\Volt;
+use PHPUnit\Framework\Assert;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 final class TwoFactorAuthenticationTest extends TestCase
@@ -19,7 +22,7 @@ final class TwoFactorAuthenticationTest extends TestCase
         parent::setUp();
 
         if (! Features::canManageTwoFactorAuthentication()) {
-            $this->markTestSkipped('Two-factor authentication is not enabled.');
+            Assert::markTestSkipped('Two-factor authentication is not enabled.');
         }
 
         Features::twoFactorAuthentication([
@@ -28,19 +31,23 @@ final class TwoFactorAuthenticationTest extends TestCase
         ]);
     }
 
-    public function test_two_factor_settings_page_can_be_rendered(): void
+    #[Test]
+    public function two_factor_settings_page_can_be_rendered(): void
     {
-        $user = User::factory()->withoutTwoFactor()->create();
+        $user = User::factory()
+            ->withoutTwoFactor()
+            ->create();
 
         $this->actingAs($user)
-            ->withSession(['auth.password_confirmed_at' => \Carbon\Carbon::now()->getTimestamp()])
+            ->withSession(['auth.password_confirmed_at' => Carbon::now()->getTimestamp()])
             ->get(route('two-factor.show'))
             ->assertOk()
             ->assertSee('Two Factor Authentication')
             ->assertSee('Disabled');
     }
 
-    public function test_two_factor_settings_page_requires_password_confirmation_when_enabled(): void
+    #[Test]
+    public function two_factor_settings_page_requires_password_confirmation_when_enabled(): void
     {
         $user = User::factory()->create();
 
@@ -50,20 +57,22 @@ final class TwoFactorAuthenticationTest extends TestCase
         $testResponse->assertRedirect(route('password.confirm'));
     }
 
-    public function test_two_factor_settings_page_returns_forbidden_response_when_two_factor_is_disabled(): void
+    #[Test]
+    public function two_factor_settings_page_returns_forbidden_response_when_two_factor_is_disabled(): void
     {
         config(['fortify.features' => []]);
 
         $user = User::factory()->create();
 
         $testResponse = $this->actingAs($user)
-            ->withSession(['auth.password_confirmed_at' => \Carbon\Carbon::now()->getTimestamp()])
+            ->withSession(['auth.password_confirmed_at' => Carbon::now()->getTimestamp()])
             ->get(route('two-factor.show'));
 
         $testResponse->assertForbidden();
     }
 
-    public function test_two_factor_authentication_disabled_when_confirmation_abandoned_between_requests(): void
+    #[Test]
+    public function two_factor_authentication_disabled_when_confirmation_abandoned_between_requests(): void
     {
         $user = User::factory()->create();
 
