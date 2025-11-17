@@ -55,6 +55,7 @@ final class User extends Authenticatable implements MustVerifyEmail
     use HasFactory;
     use Notifiable;
     use TwoFactorAuthenticatable;
+
     /**
      * The attributes that are mass assignable.
      *

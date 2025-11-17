@@ -2,12 +2,14 @@
 
 declare(strict_types=1);
 
+use App\Livewire\Settings\Profile;
 use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\Route;
 use Laravel\Fortify\Features;
 use Livewire\Volt\Volt;
 
-Route::get('/', fn (): Factory|\Illuminate\Contracts\View\View => view('welcome'))->name('home');
+Route::get('/', fn (): Factory|View => view('welcome'))->name('home');
 
 Route::view('dashboard', 'dashboard')
     ->middleware(['auth', 'verified'])
@@ -16,11 +18,11 @@ Route::view('dashboard', 'dashboard')
 Route::middleware(['auth'])->group(function (): void {
     Route::redirect('settings', 'settings/profile');
 
-    Volt::route('settings/profile', 'settings.profile')->name('profile.edit');
+    Route::get('settings/profile', Profile::class)->name('profile.edit');
     Volt::route('settings/password', 'settings.password')->name('user-password.edit');
     Volt::route('settings/appearance', 'settings.appearance')->name('appearance.edit');
 
-    Volt::route('settings/two-factor', 'settings.two-factor')
+    Route::get('settings/two-factor', 'settings.two-factor')
         ->middleware(
             when(
                 Features::canManageTwoFactorAuthentication()
