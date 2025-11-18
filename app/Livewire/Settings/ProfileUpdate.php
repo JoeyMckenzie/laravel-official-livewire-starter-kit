@@ -5,13 +5,14 @@ declare(strict_types=1);
 namespace App\Livewire\Settings;
 
 use App\Models\User;
+use Illuminate\Container\Attributes\CurrentUser;
+use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Validation\Rule;
-use Illuminate\View\View;
 use Livewire\Component;
 
-final class Profile extends Component
+final class ProfileUpdate extends Component
 {
     public string $name = '';
 
@@ -20,10 +21,10 @@ final class Profile extends Component
     /**
      * Mount the component.
      */
-    public function mount(): void
+    public function mount(#[CurrentUser] User $user): void
     {
-        $this->name = Auth::user()->name ?? '';
-        $this->email = Auth::user()->email ?? '';
+        $this->name = $user->name;
+        $this->email = $user->email;
     }
 
     /**

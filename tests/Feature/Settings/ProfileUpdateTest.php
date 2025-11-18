@@ -4,13 +4,16 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Settings;
 
+use App\Livewire\Settings\ProfileUpdate;
 use App\Models\User;
 use Illuminate\Support\Carbon;
 use Livewire\Livewire;
 use PHPUnit\Framework\Assert;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
+#[CoversClass(ProfileUpdate::class)]
 final class ProfileUpdateTest extends TestCase
 {
     private User $user;
@@ -35,7 +38,7 @@ final class ProfileUpdateTest extends TestCase
     #[Test]
     public function profile_information_can_be_updated(): void
     {
-        $testable = Livewire::test('settings.profile')
+        $testable = Livewire::test(ProfileUpdate::class)
             ->set('name', 'Test User')
             ->set('email', 'test@example.com')
             ->call('updateProfileInformation');
@@ -52,7 +55,7 @@ final class ProfileUpdateTest extends TestCase
     #[Test]
     public function email_verification_status_is_unchanged_when_email_address_is_unchanged(): void
     {
-        $testable = Livewire::test('settings.profile')
+        $testable = Livewire::test(ProfileUpdate::class)
             ->set('name', 'Test User')
             ->set('email', $this->user->email)
             ->call('updateProfileInformation');

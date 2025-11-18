@@ -2,21 +2,24 @@
 
 declare(strict_types=1);
 
-namespace App\Livewire\Auth;
+namespace App\Actions\Fortify;
 
+use Illuminate\Contracts\Auth\StatefulGuard;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Routing\Redirector;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 
-final class Logout
+final class LogoutUser
 {
     /**
      * Log the current user out of the application.
      */
-    public function __invoke(): Redirector|RedirectResponse // @php
+    public function __invoke(): Redirector|RedirectResponse // @phpstan-ignore-line
     {
-        Auth::guard('web')->logout();
+        /** @var StatefulGuard $guard */
+        $guard = Auth::guard('web');
+        $guard->logout();
 
         Session::invalidate();
         Session::regenerateToken();

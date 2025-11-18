@@ -8,7 +8,7 @@ use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Laravel\Fortify\Features;
-use Livewire\Volt\Volt;
+use Livewire;
 use PHPUnit\Framework\Assert;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
@@ -84,8 +84,7 @@ final class TwoFactorAuthenticationTest extends TestCase
 
         $this->actingAs($user);
 
-        $testable = Volt::test('settings.two-factor');
-
+        $testable = Livewire::test('settings.two-factor');
         $testable->assertSet('twoFactorEnabled', false);
 
         $this->assertDatabaseHas('users', [

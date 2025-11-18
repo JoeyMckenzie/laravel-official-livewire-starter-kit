@@ -2,7 +2,8 @@
 
 declare(strict_types=1);
 
-use App\Livewire\Settings\Profile;
+use App\Livewire\Settings\ProfileUpdate;
+use App\Livewire\Settings\TwoFactorAuthentication;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\Route;
@@ -18,18 +19,17 @@ Route::view('dashboard', 'dashboard')
 Route::middleware(['auth'])->group(function (): void {
     Route::redirect('settings', 'settings/profile');
 
-    Route::get('settings/profile', Profile::class)->name('profile.edit');
+    Route::get('settings/profile', ProfileUpdate::class)->name('profile.edit');
     Volt::route('settings/password', 'settings.password')->name('user-password.edit');
     Volt::route('settings/appearance', 'settings.appearance')->name('appearance.edit');
 
-    Route::get('settings/two-factor', 'settings.two-factor')
+    Route::get('settings/two-factor', TwoFactorAuthentication::class)
+        ->name('two-factor.show')
         ->middleware(
             when(
-                Features::canManageTwoFactorAuthentication()
-                && Features::optionEnabled(Features::twoFactorAuthentication(), 'confirmPassword'),
+                Features::canManageTwoFactorAuthentication() && Features::optionEnabled(Features::twoFactorAuthentication(), 'confirmPassword'),
                 ['password.confirm'],
                 [],
             ),
-        )
-        ->name('two-factor.show');
+        );
 });

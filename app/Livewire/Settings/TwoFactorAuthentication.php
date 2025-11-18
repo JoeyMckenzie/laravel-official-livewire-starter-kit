@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace App\Livewire\Settings;
 
+use App\Models\User;
 use Exception;
+use Illuminate\Container\Attributes\CurrentUser;
 use Illuminate\View\View;
 use Laravel\Fortify\Actions\ConfirmTwoFactorAuthentication;
 use Laravel\Fortify\Actions\DisableTwoFactorAuthentication;
@@ -17,7 +19,7 @@ use Livewire\Attributes\Validate;
 use Livewire\Volt\Component;
 use Symfony\Component\HttpFoundation\Response;
 
-final class Enable2fa extends Component
+final class TwoFactorAuthentication extends Component
 {
     #[Locked]
     public bool $twoFactorEnabled;
@@ -41,27 +43,31 @@ final class Enable2fa extends Component
     /**
      * Mount the component.
      */
-    public function mount(DisableTwoFactorAuthentication $disableTwoFactorAuthentication): void
-    {
+    public function mount(
+        #[CurrentUser] User $user,
+        DisableTwoFactorAuthentication $disableTwoFactorAuthentication
+    ): void {
         abort_unless(Features::enabled(Features::twoFactorAuthentication()), Response::HTTP_FORBIDDEN);
 
-        if (Fortify::confirmsTwoFactorAuthentication() && is_null(auth()->user()->two_factor_confirmed_at)) {
-            $disableTwoFactorAuthentication(auth()->user());
+        if (Fortify::confirmsTwoFactorAuthentication() && $user->two_factor_confirmed_at === null) {
+            $disableTwoFactorAuthentication($user);
         }
 
-        $this->twoFactorEnabled = auth()->user()->hasEnabledTwoFactorAuthentication();
+        $this->twoFactorEnabled = $user->hasEnabledTwoFactorAuthentication();
         $this->requiresConfirmation = Features::optionEnabled(Features::twoFactorAuthentication(), 'confirm');
     }
 
     /**
      * Enable two-factor authentication for the user.
      */
-    public function enable(EnableTwoFactorAuthentication $enableTwoFactorAuthentication): void
-    {
-        $enableTwoFactorAuthentication(auth()->user());
+    public function enable(
+        #[CurrentUser] User $user,
+        EnableTwoFactorAuthentication $enableTwoFactorAuthentication
+    ): void {
+        $enableTwoFactorAuthentication($user);
 
         if (! $this->requiresConfirmation) {
-            $this->twoFactorEnabled = auth()->user()->hasEnabledTwoFactorAuthentication();
+            $this->twoFactorEnabled = $user->hasEnabledTwoFactorAuthentication();
         }
 
         $this->loadSetupData();

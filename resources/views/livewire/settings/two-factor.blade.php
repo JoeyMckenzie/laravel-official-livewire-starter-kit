@@ -1,25 +1,9 @@
-<?php
-
-use Laravel\Fortify\Actions\ConfirmTwoFactorAuthentication;
-use Laravel\Fortify\Actions\DisableTwoFactorAuthentication;
-use Laravel\Fortify\Actions\EnableTwoFactorAuthentication;
-use Laravel\Fortify\Features;
-use Laravel\Fortify\Fortify;
-use Livewire\Attributes\Locked;
-use Livewire\Attributes\Validate;
-use Livewire\Volt\Component;
-use Symfony\Component\HttpFoundation\Response;
-
-new class extends Component {
-
-} ?>
-
 <section class="w-full">
     @include('partials.settings-heading')
 
     <x-settings.layout
-        :heading="__('Two Factor Authentication')"
-        :subheading="__('Manage your two-factor authentication settings')"
+            :heading="__('Two Factor Authentication')"
+            :subheading="__('Manage your two-factor authentication settings')"
     >
         <div class="flex flex-col w-full mx-auto space-y-6 text-sm" wire:cloak>
             @if ($twoFactorEnabled)
@@ -36,10 +20,10 @@ new class extends Component {
 
                     <div class="flex justify-start">
                         <flux:button
-                            variant="danger"
-                            icon="shield-exclamation"
-                            icon:variant="outline"
-                            wire:click="disable"
+                                variant="danger"
+                                icon="shield-exclamation"
+                                icon:variant="outline"
+                                wire:click="disable"
                         >
                             {{ __('Disable 2FA') }}
                         </flux:button>
@@ -56,10 +40,10 @@ new class extends Component {
                     </flux:text>
 
                     <flux:button
-                        variant="primary"
-                        icon="shield-check"
-                        icon:variant="outline"
-                        wire:click="enable"
+                            variant="primary"
+                            icon="shield-check"
+                            icon:variant="outline"
+                            wire:click="enable"
                     >
                         {{ __('Enable 2FA') }}
                     </flux:button>
@@ -69,26 +53,26 @@ new class extends Component {
     </x-settings.layout>
 
     <flux:modal
-        name="two-factor-setup-modal"
-        class="max-w-md md:min-w-md"
-        @close="closeModal"
-        wire:model="showModal"
+            name="two-factor-setup-modal"
+            class="max-w-md md:min-w-md"
+            @close="closeModal"
+            wire:model="showModal"
     >
         <div class="space-y-6">
             <div class="flex flex-col items-center space-y-4">
                 <div
-                    class="p-0.5 w-auto rounded-full border border-stone-100 dark:border-stone-600 bg-white dark:bg-stone-800 shadow-sm">
+                        class="p-0.5 w-auto rounded-full border border-stone-100 dark:border-stone-600 bg-white dark:bg-stone-800 shadow-sm">
                     <div
-                        class="p-2.5 rounded-full border border-stone-200 dark:border-stone-600 overflow-hidden bg-stone-100 dark:bg-stone-200 relative">
+                            class="p-2.5 rounded-full border border-stone-200 dark:border-stone-600 overflow-hidden bg-stone-100 dark:bg-stone-200 relative">
                         <div
-                            class="flex items-stretch absolute inset-0 w-full h-full divide-x [&>div]:flex-1 divide-stone-200 dark:divide-stone-300 justify-around opacity-50">
+                                class="flex items-stretch absolute inset-0 w-full h-full divide-x [&>div]:flex-1 divide-stone-200 dark:divide-stone-300 justify-around opacity-50">
                             @for ($i = 1; $i <= 5; $i++)
                                 <div></div>
                             @endfor
                         </div>
 
                         <div
-                            class="flex flex-col items-stretch absolute w-full h-full divide-y [&>div]:flex-1 inset-0 divide-stone-200 dark:divide-stone-300 justify-around opacity-50">
+                                class="flex flex-col items-stretch absolute w-full h-full divide-y [&>div]:flex-1 inset-0 divide-stone-200 dark:divide-stone-300 justify-around opacity-50">
                             @for ($i = 1; $i <= 5; $i++)
                                 <div></div>
                             @endfor
@@ -108,10 +92,10 @@ new class extends Component {
                 <div class="space-y-6">
                     <div class="flex flex-col items-center space-y-3">
                         <x-input-otp
-                            :digits="6"
-                            name="code"
-                            wire:model="code"
-                            autocomplete="one-time-code"
+                                :digits="6"
+                                name="code"
+                                wire:model="code"
+                                autocomplete="one-time-code"
                         />
                         @error('code')
                         <flux:text color="red">
@@ -122,18 +106,18 @@ new class extends Component {
 
                     <div class="flex items-center space-x-3">
                         <flux:button
-                            variant="outline"
-                            class="flex-1"
-                            wire:click="resetVerification"
+                                variant="outline"
+                                class="flex-1"
+                                wire:click="resetVerification"
                         >
                             {{ __('Back') }}
                         </flux:button>
 
                         <flux:button
-                            variant="primary"
-                            class="flex-1"
-                            wire:click="confirmTwoFactor"
-                            x-bind:disabled="$wire.code.length < 6"
+                                variant="primary"
+                                class="flex-1"
+                                wire:click="confirmTwoFactor"
+                                x-bind:disabled="$wire.code.length < 6"
                         >
                             {{ __('Confirm') }}
                         </flux:button>
@@ -146,10 +130,10 @@ new class extends Component {
 
                 <div class="flex justify-center">
                     <div
-                        class="relative w-64 overflow-hidden border rounded-lg border-stone-200 dark:border-stone-700 aspect-square">
+                            class="relative w-64 overflow-hidden border rounded-lg border-stone-200 dark:border-stone-700 aspect-square">
                         @empty($qrCodeSvg)
                             <div
-                                class="absolute inset-0 flex items-center justify-center bg-white dark:bg-stone-700 animate-pulse">
+                                    class="absolute inset-0 flex items-center justify-center bg-white dark:bg-stone-700 animate-pulse">
                                 <flux:icon.loading/>
                             </div>
                         @else
@@ -164,10 +148,10 @@ new class extends Component {
 
                 <div>
                     <flux:button
-                        :disabled="$errors->has('setupData')"
-                        variant="primary"
-                        class="w-full"
-                        wire:click="showVerificationIfNecessary"
+                            :disabled="$errors->has('setupData')"
+                            variant="primary"
+                            class="w-full"
+                            wire:click="showVerificationIfNecessary"
                     >
                         {{ $this->modalConfig['buttonText'] }}
                     </flux:button>
@@ -177,14 +161,14 @@ new class extends Component {
                     <div class="relative flex items-center justify-center w-full">
                         <div class="absolute inset-0 w-full h-px top-1/2 bg-stone-200 dark:bg-stone-600"></div>
                         <span
-                            class="relative px-2 text-sm bg-white dark:bg-stone-800 text-stone-600 dark:text-stone-400">
+                                class="relative px-2 text-sm bg-white dark:bg-stone-800 text-stone-600 dark:text-stone-400">
                             {{ __('or, enter the code manually') }}
                         </span>
                     </div>
 
                     <div
-                        class="flex items-center space-x-2"
-                        x-data="{
+                            class="flex items-center space-x-2"
+                            x-data="{
                             copied: false,
                             async copy() {
                                 try {
@@ -204,21 +188,21 @@ new class extends Component {
                                 </div>
                             @else
                                 <input
-                                    type="text"
-                                    readonly
-                                    value="{{ $manualSetupKey }}"
-                                    class="w-full p-3 bg-transparent outline-none text-stone-900 dark:text-stone-100"
+                                        type="text"
+                                        readonly
+                                        value="{{ $manualSetupKey }}"
+                                        class="w-full p-3 bg-transparent outline-none text-stone-900 dark:text-stone-100"
                                 />
 
                                 <button
-                                    @click="copy()"
-                                    class="px-3 transition-colors border-l cursor-pointer border-stone-200 dark:border-stone-600"
+                                        @click="copy()"
+                                        class="px-3 transition-colors border-l cursor-pointer border-stone-200 dark:border-stone-600"
                                 >
                                     <flux:icon.document-duplicate x-show="!copied" variant="outline"></flux:icon>
                                     <flux:icon.check
-                                        x-show="copied"
-                                        variant="solid"
-                                        class="text-green-500"
+                                            x-show="copied"
+                                            variant="solid"
+                                            class="text-green-500"
                                     ></flux:icon>
                                 </button>
                             @endempty
